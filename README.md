@@ -1,0 +1,2 @@
+# AnimadorAFD
+O objetivo deste trabalho é aplicar os conhecimentos obtidos sobre AFDs para construir uma ferramenta que produza uma animação de um AFD sob uma dada entrada. A ideia para a realização deste trabalho consiste em produzir um quadro de imagem para cada passo da configuração instantânea da máquina, realçando-se o estado corrente e as próximas transições possíveis. O trabalho de juntar todos os quadros e formar uma animação deve ser gerenciado por uma ferramenta externa e está fora do escopo deste trabalho.
