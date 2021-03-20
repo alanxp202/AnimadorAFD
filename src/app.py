@@ -1,3 +1,4 @@
+from State import State
 import json
 
 
@@ -19,6 +20,7 @@ def main():
 	arquivo_de_entrada = 'entrada.txt'
 
 	open_input(arquivo_de_entrada)
+	
 
 if __name__ == "__main__":
     main()
