@@ -1,4 +1,4 @@
-import pydot_ng as pydot
+import pydot as pydot
 import os
 
 #os.environ["PATH"] += os.pathsep + 'C:/Users/alanq/scoop/apps/graphviz/2.44.1/bin'
