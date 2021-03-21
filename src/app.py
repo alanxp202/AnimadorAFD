@@ -43,14 +43,25 @@ def get_transitions(input_file:list)-> list:
 	return result
 
 
+def get_word(input_file:list)-> str:
+
+	last = (len(input_file)-1)
+	word = input_file[last]
+	word = word.split(' : ')
+	result = word[1]
+
+	return result
+
+
 def main():
+	
 	path = 'entrada.txt'
 
 	input_file = open_input(path)
 	initials = initial_and_final(input_file, 'inicial')
 	finals = initial_and_final(input_file, 'final')
 	transitions = get_transitions(input_file)
-
+	word = get_word(input_file)
 
 if __name__ == "__main__":
     main()
