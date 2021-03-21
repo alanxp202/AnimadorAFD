@@ -35,11 +35,12 @@ def initial_and_final(input_file:list, option:int)-> list:
 
 def get_transitions(input_file:list)-> list:
 
-	input_file.pop(0)
-	size = len(input_file)
-	input_file.pop(size-1)
+	result = input_file.copy()
+	result.pop(0)
+	size = len(result)
+	result.pop(size-1)
 
-	return input_file
+	return result
 
 
 def main():
@@ -50,7 +51,6 @@ def main():
 	finals = initial_and_final(input_file, 'final')
 	transitions = get_transitions(input_file)
 
-	#automato = Automaton('A1',)
 
 if __name__ == "__main__":
     main()
