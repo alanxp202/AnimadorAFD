@@ -16,7 +16,7 @@ def open_input(file_name: str)->list:
 	return entrada
 
 
-def treat_info(input_file:list, option:int)-> list:
+def initial_and_final(input_file:list, option:int)-> list:
 
 	intial_and_final = input_file[0]
 	intial_and_final = intial_and_final.split(' ; ')
@@ -25,7 +25,7 @@ def treat_info(input_file:list, option:int)-> list:
 	if option == 'inicial':
 		result = intial_and_final[0].split(', ')
 		result = intial_and_final[0].split(',')
-	
+
 	elif option == 'final':
 		result = intial_and_final[1].split(',')
 		result = intial_and_final[1].split(', ')
@@ -37,8 +37,8 @@ def main():
 	path = 'entrada.txt'
 
 	input_file = open_input(path)
-	initials = treat_info(input_file, 'inicial')
-	finals = treat_info(input_file, 'final')
+	initials = initial_and_final(input_file, 'inicial')
+	finals = initial_and_final(input_file, 'final')
 
 	#automato = Automaton('A1',)
 
