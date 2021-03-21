@@ -33,12 +33,22 @@ def initial_and_final(input_file:list, option:int)-> list:
 	return result
 
 
+def get_transitions(input_file:list)-> list:
+
+	input_file.pop(0)
+	size = len(input_file)
+	input_file.pop(size-1)
+
+	return input_file
+
+
 def main():
 	path = 'entrada.txt'
 
 	input_file = open_input(path)
 	initials = initial_and_final(input_file, 'inicial')
 	finals = initial_and_final(input_file, 'final')
+	transitions = get_transitions(input_file)
 
 	#automato = Automaton('A1',)
 
