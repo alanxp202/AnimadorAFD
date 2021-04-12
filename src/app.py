@@ -47,9 +47,9 @@ def get_states(transitions:list, intial_or_final:list)-> list:
 	states = []
 	
 	for info in transitions:
-		teste = info.split(' ')
-		origin = teste[0]
-		goal = teste[3]
+		estados = info.split(' ')
+		origin = estados[0]
+		goal = estados[3]
 		if origin not in states:
 			states.append(origin)
 		if goal not in states:
@@ -65,7 +65,7 @@ def get_states(transitions:list, intial_or_final:list)-> list:
 		elif info in intial_or_final [1]:
 			dict_states[info]['is_final'] = True
 		
-
+	return dict_states
 
 def get_word(input_file:list)-> str:
 
@@ -82,15 +82,15 @@ def main():
 	path = 'entrada.txt'
 
 	input_file = open_input(path)
-	#print(input_file)
-
 	transitions = get_transitions(input_file)
-	#print(transitions)
 	intial_or_final = initial_and_final(input_file)
-	#print(intial_or_final)
+	states = get_states(transitions, intial_or_final)
+	word = get_word(input_file)
 
-	get_states(transitions, intial_or_final)
-
+	automaton = Automaton(word, transitions, intial_or_final[0], intial_or_final[1])
+	
+	print(automaton.to_string())
+	automaton.start_trasitinos()
 
 	#get_states(input_file)
 	# intial_or_final = initial_and_final(input_file)
