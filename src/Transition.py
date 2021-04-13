@@ -27,4 +27,4 @@ class Transition:
 
 
     def to_string(self):
-        return f'{self.origin.get_name()} -{self.name}-> {self.goal.get_name()}'
+        return f'{self.origin.get_name()} {self.name} > {self.goal.get_name()}'

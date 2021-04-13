@@ -208,7 +208,10 @@ def main():
 
 	a = Automaton('Automato Finito',word, transitions)
 	
+	teste = a.get_initials()
+	teste = a.get_initials(teste.get_name())
 	
+	print (teste.get_name())
 	
 	
 	
