@@ -168,6 +168,23 @@ def load_states(states_dict: dict) ->list:
 	return states
 
 
+def load_transitions(states:list, transitions_raw:list):
+
+	transitions = []
+
+	for transition in transitions_raw:
+		estados = transition.split(' ')
+		origin = estados[0]
+		word = estados[1]
+		goal = estados[3]
+		
+		t = Transition(word,origin,goal)
+		transitions.append(t)
+	
+	for info in transitions:
+		print(f'{info.get_origin()} -> {info.get_goal()}')
+
+	
 def main():
 
 	path = 'entrada.txt'
@@ -178,9 +195,10 @@ def main():
 	states_dict = get_states(transitions_raw, intial_or_final)
 	word = get_word(input_file)
 
-	#print(states)
-	states =load_states(states_dict)
+	states = load_states(states_dict)
+	transitions = load_transitions(states, transitions_raw)
 
+	exit()
 	#salve_dot(transitions, intial_or_final)
 	reach = reach_for('s0', transitions_raw)
 	print(reach)
