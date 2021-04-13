@@ -207,6 +207,15 @@ def main():
 	transitions = load_transitions(states, transitions_raw)
 
 	a = Automaton('Automato Finito',word, transitions)
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	#print(states_dict)
 	#a.walk()
 
@@ -214,6 +223,7 @@ def main():
 
 	#exit()
 	salve_dot(transitions_raw, intial_or_final)
+
 	#reach = reach_for('s0', transitions_raw)
 	#print(reach)
 

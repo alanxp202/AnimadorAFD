@@ -35,15 +35,3 @@ class Automaton:
                 self.finals.append(transition.get_goal())
 
 
-    def reach(self, word):
-
-        reach = []
-        for i in self.transitions:
-            if i.get_origin() in self.initials and i.get_name() == word[0]:
-                reach.append(i.get_goal().get_name())
-        
-        return reach
-
-    def walk(self):
-        
-        reach(self, word)
