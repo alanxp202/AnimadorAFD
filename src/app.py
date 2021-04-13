@@ -1,5 +1,5 @@
-#from automaton import Automaton
 from transition import Transition
+from automaton import Automaton
 from state import State
 import pydot
 import json
@@ -65,7 +65,7 @@ def get_states(transitions:list, intial_or_final:list)-> list:
 		}
 		if info in intial_or_final [0]:
 			dict_states[info]['is_initial'] = True
-		elif info in intial_or_final [1]:
+		if info in intial_or_final [1]:
 			dict_states[info]['is_final'] = True
 		
 	return dict_states
@@ -183,16 +183,16 @@ def load_transitions(states:list, transitions_raw:list):
 	
 	for info in transitions:
 		for state in states:
-			#print(state.get_name())
 			if info.get_origin() == state.get_name():
 				info.set_origin(state)
 
 			if info.get_goal() == state.get_name():
 				info.set_goal(state)
 
-		print(f'{info.get_origin().get_name()} -{info.get_origin()}-> {info.get_goal().get_name()}')
+		print(f'{info.get_origin().get_name()} -{info.get_name()}-> {info.get_goal().get_name()}')
 
-	
+	return transitions 
+
 def main():
 
 	path = 'entrada.txt'
@@ -205,6 +205,10 @@ def main():
 
 	states = load_states(states_dict)
 	transitions = load_transitions(states, transitions_raw)
+
+	a = Automaton('Automato Finito',word, transitions)
+
+	#for transition in transitions:
 
 	exit()
 	#salve_dot(transitions, intial_or_final)
