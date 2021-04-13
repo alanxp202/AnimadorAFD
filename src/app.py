@@ -84,18 +84,17 @@ def get_word(input_file:list)-> list:
 	return result
 
 
-def salve_dot(transitions:list, intial_or_final:list):
+def salve_dot(transitions:list, inicial, final, nome:str):
 	
-	graph = pydot.Dot('Automanto', graph_type='digraph', bgcolor='gray')
+	graph = pydot.Dot(label=nome, graph_type='digraph', bgcolor='gray')
 	states = []
 	num = 0
 
-	for intial in intial_or_final[0]:
-		graph.add_node(pydot.Node(num,shape = 'point'))
-		my_edge = pydot.Edge(num, intial)
-		graph.add_edge(my_edge)
-		num+=1
-
+	
+	graph.add_node(pydot.Node(num,shape = 'point'))
+	my_edge = pydot.Edge(num, inicial)
+	graph.add_edge(my_edge)
+	num+=1
 
 	for info in transitions:
 		estados = info.split(' ')
@@ -108,7 +107,7 @@ def salve_dot(transitions:list, intial_or_final:list):
 			states.append(destino)
 
 		for info in states:
-			if info in intial_or_final[1]:
+			if info in final:
 				graph.add_node(pydot.Node(info, shape='doublecircle'))
 			else:
 				graph.add_node(pydot.Node(info, shape='circle'))
@@ -208,26 +207,24 @@ def main():
 
 	a = Automaton('Automato Finito',word, transitions)
 	
-	teste = a.get_initials()
+	inicial = a.get_initials()
 	
-	#print (teste.get_name())
+	#print (inicial.get_name())
 	
-	walk = a.get_reach(teste, word[0])
+	walk = a.get_reach(inicial, word[0])
 	word.pop(0)
 	#print(walk)
 
 	for w in word:
-		walk = a.get_reach(teste, w)
-		#print(walk)
+		walk = a.get_reach(walk, w)
+		print(walk.get_name())
 
 	steps = a.get_steps()
 
 	print(steps)
-	
-	
-	
-	
-	
+
+	salve_dot(transitions_raw,inicial.get_name(), walk.get_name(), a.get_name())
+
 	
 	#print(states_dict)
 	#a.walk()
@@ -235,7 +232,7 @@ def main():
 	#for transition in transitions:
 
 	#exit()
-	salve_dot(transitions_raw, intial_or_final)
+	#salve_dot(transitions_raw, intial_or_final)
 
 	#reach = reach_for('s0', transitions_raw)
 	#print(reach)
