@@ -209,10 +209,20 @@ def main():
 	a = Automaton('Automato Finito',word, transitions)
 	
 	teste = a.get_initials()
-	teste = a.get_initials(teste.get_name())
 	
-	print (teste.get_name())
+	#print (teste.get_name())
 	
+	walk = a.get_reach(teste, word[0])
+	word.pop(0)
+	#print(walk)
+
+	for w in word:
+		walk = a.get_reach(teste, w)
+		#print(walk)
+
+	steps = a.get_steps()
+
+	print(steps)
 	
 	
 	
