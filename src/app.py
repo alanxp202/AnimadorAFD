@@ -70,6 +70,7 @@ def get_states(transitions:list, intial_or_final:list)-> list:
 		
 	return dict_states
 
+
 def get_word(input_file:list)-> list:
 
 	last = (len(input_file)-1)
@@ -81,6 +82,7 @@ def get_word(input_file:list)-> list:
 		result.append(info)
 
 	return result
+
 
 def salve_dot(transitions:list, intial_or_final:list):
 	
@@ -154,6 +156,18 @@ def reach_for(state, states):
 
 	# #print(wrd)
 
+
+def load_states(states_dict: dict) ->list:
+
+	dictionary_items = states_dict.items()
+	states = []
+	for item in dictionary_items:
+		s = State(item[0], item[1]['is_initial'], item[1]['is_final'])
+		states.append(s)
+
+	return states
+
+
 def main():
 
 	path = 'entrada.txt'
@@ -165,7 +179,7 @@ def main():
 	word = get_word(input_file)
 
 	#print(states)
-
+	states =load_states(states_dict)
 
 	#salve_dot(transitions, intial_or_final)
 	reach = reach_for('s0', transitions_raw)
