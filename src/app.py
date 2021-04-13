@@ -189,7 +189,7 @@ def load_transitions(states:list, transitions_raw:list):
 			if info.get_goal() == state.get_name():
 				info.set_goal(state)
 
-		print(f'{info.get_origin().get_name()} -{info.get_name()}-> {info.get_goal().get_name()}')
+		#print(f'{info.get_origin().get_name()} -{info.get_name()}-> {info.get_goal().get_name()}')
 
 	return transitions 
 
@@ -207,13 +207,15 @@ def main():
 	transitions = load_transitions(states, transitions_raw)
 
 	a = Automaton('Automato Finito',word, transitions)
+	#print(states_dict)
+	#a.walk()
 
 	#for transition in transitions:
 
-	exit()
-	#salve_dot(transitions, intial_or_final)
-	reach = reach_for('s0', transitions_raw)
-	print(reach)
+	#exit()
+	salve_dot(transitions_raw, intial_or_final)
+	#reach = reach_for('s0', transitions_raw)
+	#print(reach)
 
 	
 if __name__ == "__main__":
