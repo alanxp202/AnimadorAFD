@@ -17,7 +17,8 @@ class Automaton:
             print(t.to_string())
 
             transicoes.append(t)
+        self.transitions = transicoes
 
     def to_string(self):
         
-        return f'Palavra: {self.word}, Transições: {self.transitions}, Estados iniciais: {self.initials}, Estados finais: {self.finals}'
+        return f'Palavra: {self.word}, Transições: {self.transitions.to_string()}, Estados iniciais: {self.initials}, Estados finais: {self.finals}'

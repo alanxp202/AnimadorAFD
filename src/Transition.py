@@ -1,6 +1,5 @@
 from state import State
 
-
 class Transition:
     def __init__(self, name:str, origin:State, goal:State):
         self.name = name
