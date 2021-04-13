@@ -182,7 +182,15 @@ def load_transitions(states:list, transitions_raw:list):
 		transitions.append(t)
 	
 	for info in transitions:
-		print(f'{info.get_origin()} -> {info.get_goal()}')
+		for state in states:
+			#print(state.get_name())
+			if info.get_origin() == state.get_name():
+				info.set_origin(state)
+
+			if info.get_goal() == state.get_name():
+				info.set_goal(state)
+
+		print(f'{info.get_origin().get_name()} -{info.get_origin()}-> {info.get_goal().get_name()}')
 
 	
 def main():

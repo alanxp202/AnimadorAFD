@@ -6,9 +6,13 @@ class Transition:
         self.origin = origin
         self.goal = goal
 
+    def get_name(self):
+        return self.name
+
+
     def get_origin(self):
         return self.origin
-    
+
 
     def set_origin(self, origin:State):
         self.origin = origin
