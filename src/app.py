@@ -1,4 +1,6 @@
-from automaton import Automaton
+#from automaton import Automaton
+from transition import Transition
+from state import State
 import pydot
 import json
 
@@ -68,22 +70,23 @@ def get_states(transitions:list, intial_or_final:list)-> list:
 		
 	return dict_states
 
-def get_word(input_file:list)-> str:
+def get_word(input_file:list)-> list:
 
 	last = (len(input_file)-1)
 	word = input_file[last]
 	word = word.split(' : ')
-	result = word[1]
+	result = []
+
+	for info in word[1]:
+		result.append(info)
 
 	return result
 
 def salve_dot(transitions:list, intial_or_final:list):
 	
-	graph = pydot.Dot('Automanto',graph_type='digraph', bgcolor='gray')
+	graph = pydot.Dot('Automanto', graph_type='digraph', bgcolor='gray')
 	states = []
 	num = 0
-
-	print( intial_or_final[0])
 
 	for intial in intial_or_final[0]:
 		graph.add_node(pydot.Node(num,shape = 'point'))
@@ -91,7 +94,6 @@ def salve_dot(transitions:list, intial_or_final:list):
 		graph.add_edge(my_edge)
 		num+=1
 
-	
 
 	for info in transitions:
 		estados = info.split(' ')
@@ -114,36 +116,61 @@ def salve_dot(transitions:list, intial_or_final:list):
 		graph.add_edge(my_edge)
 	
 	graph.set_graph_defaults(rankdir='LR')
-	graph.write_raw('assets/dot/output_raw.dot')
+	graph.write_raw('assets/dot/output.dot')
 	graph.write_png('assets/steps/output.png')
 
+
+def reach_for(state, states):
+
+	reach = []
+	#if not not wrd:
+	for info in states:
+		estados = info.split(' ')
+		origin = estados[0]
+		word = estados[1]
+		goal = estados[3]
+		try:
+			#print(estados)
+			if state == origin:
+				reach.append(goal)
+				
+		except IndexError as e:
+			pass
+	return reach
+	# else:
+	# 	return
+
+	# #print(reach)
+
+	# for info in reach:
+	# 	#print(info)
+	# 	try:
+	# 		print(f'{wrd[0]}[{info}]')
+	# 		wrd.pop(0)
+	# 		reach_for(info, states, wrd)
+			
+	# 	except IndexError as e:
+	# 		return
+
+	# #print(wrd)
 
 def main():
 
 	path = 'entrada.txt'
 
 	input_file = open_input(path)
-	transitions = get_transitions(input_file)
+	transitions_raw = get_transitions(input_file)
 	intial_or_final = initial_and_final(input_file)
-	states = get_states(transitions, intial_or_final)
+	states_dict = get_states(transitions_raw, intial_or_final)
 	word = get_word(input_file)
-	salve_dot(transitions, intial_or_final)
+
 	#print(states)
-	exit()
-	automaton = Automaton(word, transitions, intial_or_final[0], intial_or_final[1])
+
+
+	#salve_dot(transitions, intial_or_final)
+	reach = reach_for('s0', transitions_raw)
+	print(reach)
+
 	
-	automaton.start_trasitions()
-	print(automaton.to_string())
-
-	#get_states(input_file)
-	# intial_or_final = initial_and_final(input_file)
-	# print(intial_or_final)
-
-	# transitions = get_transitions(input_file)
-	# print(transitions)
-
-	# word = get_word(input_file)
-	# print(word)
-
 if __name__ == "__main__":
     main()
