@@ -1,8 +1,12 @@
 from transition import Transition
 from automaton import Automaton
 from state import State
+import imageio
 import pydot
+import glob
 import json
+import sys
+import os
 
 
 def open_input(file_name: str)->list:
@@ -87,10 +91,9 @@ def get_word(input_file:list)-> list:
 def salve_dot(automaton:Automaton):
 	
 	ini = 0
-	states = []
+	steps = 1
 	graph = pydot.Dot(label=automaton.get_name(), graph_type='digraph', bgcolor='gray')
 
-	print(graph.get_name())
 	for i in automaton.get_states():
 		if i in automaton.get_initials_list():
 			graph.add_node(pydot.Node(ini, shape = 'point'))
@@ -111,49 +114,71 @@ def salve_dot(automaton:Automaton):
 		graph.add_edge(my_edge)
 
 	graph.set_graph_defaults(rankdir='LR')
-	graph.write_raw('assets/dot/output.dot')
-	graph.write_png('assets/steps/output.png')
+	graph.write_raw(f'assets/dot/output_{steps}.dot')
+	graph.write_png(f'assets/steps/output_{steps}.png')
 
 	
-	steps = 1
 	for s in automaton.get_steps():
-
-		my_node = pydot.Node(s.get_origin().get_name(), shape='circle', color='blue')
-		graph.add_node(my_node)
-		graph.write_raw(f'assets/dot/output{steps}.dot')
-		graph.write_png(f'assets/steps/output{steps}.png')
-		steps += 1
+		if s.get_origin() in automaton.get_finals_list():
+			my_node = pydot.Node(s.get_origin().get_name(), shape='doublecircle', color='blue')
+			graph.add_node(my_node)
+			graph.write_raw(f'assets/dot/output_{steps}.dot')
+			graph.write_png(f'assets/steps/output_{steps}.png')
+			steps += 1
+		else:
+			my_node = pydot.Node(s.get_origin().get_name(), shape='circle', color='blue')
+			graph.add_node(my_node)
+			graph.write_raw(f'assets/dot/output_{steps}.dot')
+			graph.write_png(f'assets/steps/output_{steps}.png')
+			steps += 1
 
 		my_edge = pydot.Edge(s.get_origin().get_name(), s.get_goal().get_name(), label = s.get_name(), color='blue')
 		graph.del_edge(s.get_origin().get_name(), s.get_goal().get_name())
 		graph.add_edge(my_edge)
 
-		graph.write_raw(f'assets/dot/output{steps}.dot')
-		graph.write_png(f'assets/steps/output{steps}.png')
+		graph.write_raw(f'assets/dot/output_{steps}.dot')
+		graph.write_png(f'assets/steps/output_{steps}.png')
 		steps += 1
 
 		my_node.set_color('black')
-		graph.write_raw(f'assets/dot/output{steps}.dot')
-		graph.write_png(f'assets/steps/output{steps}.png')
+		graph.write_raw(f'assets/dot/output_{steps}.dot')
+		graph.write_png(f'assets/steps/output_{steps}.png')
 		steps += 1
 		
 		my_edge.set_color('black')
-		graph.write_raw(f'assets/dot/output{steps}.dot')
-		graph.write_png(f'assets/steps/output{steps}.png')
+		graph.write_raw(f'assets/dot/output_{steps}.dot')
+		graph.write_png(f'assets/steps/output_{steps}.png')
 		steps += 1
 
 		if s.get_goal() in automaton.get_finals_list():
 			my_node = pydot.Node(s.get_goal().get_name(), shape='doublecircle', color='blue')
 			graph.add_node(my_node)
-			graph.write_raw(f'assets/dot/output{steps}.dot')
-			graph.write_png(f'assets/steps/output{steps}.png')
+			graph.write_raw(f'assets/dot/output_{steps}.dot')
+			graph.write_png(f'assets/steps/output_{steps}.png')
 			steps += 1
 		else:
 			my_node = pydot.Node(s.get_goal().get_name(), shape='circle', color='blue')
 			graph.add_node(my_node)
-			graph.write_raw(f'assets/dot/output{steps}.dot')
-			graph.write_png(f'assets/steps/output{steps}.png')
+			graph.write_raw(f'assets/dot/output_{steps}.dot')
+			graph.write_png(f'assets/steps/output_{steps}.png')
 			steps += 1
+
+
+def cria_gif():
+	
+	png_dir = 'assets/steps/'
+	images = []
+	dire = os.listdir(png_dir)
+
+	dire.sort(key=lambda dir:int(dir.split('_')[1].split('.')[0]))
+
+	print(dire)
+	for file_name in dire:
+		if file_name.endswith('.png'):
+			file_path = os.path.join(png_dir, file_name)
+			images.append(imageio.imread(file_path))
+	
+	imageio.mimsave('assets/gif/movie.gif', images, duration=0.5)
 
 
 def reach_for(state, states):
@@ -243,35 +268,18 @@ def main():
 	a = Automaton('Automato Finito',word, transitions)
 	
 	inicial = a.get_initials()
-	
-	#print (inicial.get_name())
-	
 	walk = a.get_reach(inicial, word[0])
 	word.pop(0)
-	#print(walk)
-
+	
 	for w in word:
 		walk = a.get_reach(walk, w)
-		#print(walk.get_name())
+		
 
 	steps = a.get_finals()
 	
 	a.get_states()
 
 	salve_dot(a)
-
-	
-	#print(states_dict)
-	#a.walk()
-
-	#for transition in transitions:
-
-	#exit()
-	#salve_dot(transitions_raw, intial_or_final)
-
-	#reach = reach_for('s0', transitions_raw)
-	#print(reach)
-
-	
+	cria_gif()
 if __name__ == "__main__":
     main()
