@@ -20,6 +20,22 @@ class Automaton:
         return self.steps
 
 
+    def get_transitions(self):
+        return self.transitions
+
+
+    def get_states(self):
+
+        result = []
+        for t in self.transitions:
+            if t.get_origin() not in result:
+                result.append(t.get_origin())
+            if t.get_goal() not in result:
+                result.append(t.get_goal())
+        
+        return result
+
+
     def get_initials(self, start = ''):
         
         if start == '':
@@ -29,6 +45,35 @@ class Automaton:
             for i in self.initials:
                 if i.get_origin().get_name() == start:
                     return i.get_origin()
+
+
+    def get_initials_list(self):
+
+        finals_list =[]
+        for i in self.initials:
+            finals_list.append(i.get_origin())
+
+        return finals_list
+
+
+    def get_finals(self, end = ''):
+        
+        if end == '':
+            for f in self.finals:
+                return f.get_goal()
+        else:
+            for f in self.finals:
+                if f.get_goal().get_name() == end:
+                    return f.get_goal()
+
+    
+    def get_finals_list(self):
+
+        finals_list =[]
+        for f in self.finals:
+            finals_list.append(f.get_goal())
+
+        return finals_list
 
 
     def start_initials(self):
@@ -45,18 +90,15 @@ class Automaton:
 
         for transition in self.transitions:
             if transition.get_origin().is_final() and transition.get_origin() not in self.finals:
-                self.finals.append(transition.get_origin())
+                self.finals.append(transition)
 
             if transition.get_goal().is_final() and transition.get_goal() not in self.finals:
-                self.finals.append(transition.get_goal())
+                self.finals.append(transition)
 
 
     def get_reach(self, state ,word):
 
-        #print(state.get_name())
         for t in self.transitions:
             if t.get_origin()== state and t.get_name() == word[0]:
                 self.steps.append (f'{t.get_origin().get_name()} {word[0]} > {t.get_goal().get_name()}')
                 return t.get_goal()
-
-
