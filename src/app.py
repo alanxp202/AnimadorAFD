@@ -84,36 +84,27 @@ def get_word(input_file:list)-> list:
 	return result
 
 
-def salve_dot(transitions:list, inicial, final, nome:str):
-	
-	graph = pydot.Dot(label=nome, graph_type='digraph', bgcolor='gray')
+def salve_dot(automaton:Automaton):
+
 	states = []
-	num = 0
+	ini = 0
+	graph = pydot.Dot(label=automaton.get_name(), graph_type='digraph', bgcolor='gray')
 
+	for i in automaton.get_states():
+		if i in automaton.get_initials_list():
+			graph.add_node(pydot.Node(ini, shape = 'point'))
+			my_edge = pydot.Edge(ini, i.get_name())
+			graph.add_edge(my_edge)
+			ini += 1
+
+	for s in automaton.get_states():
+		if s in automaton.get_finals_list():
+			graph.add_node(pydot.Node(s.get_name(), shape='doublecircle'))
+		else:
+			graph.add_node(pydot.Node(s.get_name(), shape='circle'))
 	
-	graph.add_node(pydot.Node(num,shape = 'point'))
-	my_edge = pydot.Edge(num, inicial)
-	graph.add_edge(my_edge)
-	num+=1
-
-	for info in transitions:
-		estados = info.split(' ')
-		origem = estados[0]
-		destino = estados[3]
-
-		if origem not in states:
-			states.append(origem)
-		if destino not in states:
-			states.append(destino)
-
-		for info in states:
-			if info in final:
-				graph.add_node(pydot.Node(info, shape='doublecircle'))
-			else:
-				graph.add_node(pydot.Node(info, shape='circle'))
-
-		my_edge = pydot.Edge(origem, destino, label = estados[1])
-
+	for t in automaton.get_transitions():
+		my_edge = pydot.Edge(t.get_origin().get_name(), t.get_goal().get_name(), label = t.get_name())
 		graph.add_edge(my_edge)
 	
 	graph.set_graph_defaults(rankdir='LR')
@@ -163,7 +154,6 @@ def load_states(states_dict: dict) ->list:
 	for item in dictionary_items:
 		s = State(item[0], item[1]['is_initial'], item[1]['is_final'])
 		states.append(s)
-
 	return states
 
 
@@ -192,6 +182,7 @@ def load_transitions(states:list, transitions_raw:list):
 
 	return transitions 
 
+
 def main():
 
 	path = 'entrada.txt'
@@ -217,13 +208,14 @@ def main():
 
 	for w in word:
 		walk = a.get_reach(walk, w)
-		print(walk.get_name())
+		#print(walk.get_name())
 
-	steps = a.get_steps()
+	steps = a.get_finals()
+	
+	a.get_states()
+	#print(steps.get_name())
 
-	print(steps)
-
-	salve_dot(transitions_raw,inicial.get_name(), walk.get_name(), a.get_name())
+	salve_dot(a)
 
 	
 	#print(states_dict)
