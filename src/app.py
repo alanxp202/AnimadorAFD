@@ -85,9 +85,9 @@ def get_word(input_file:list)-> list:
 
 
 def salve_dot(automaton:Automaton):
-
-	states = []
+	
 	ini = 0
+	states = []
 	graph = pydot.Dot(label=automaton.get_name(), graph_type='digraph', bgcolor='gray')
 
 	for i in automaton.get_states():
@@ -99,17 +99,47 @@ def salve_dot(automaton:Automaton):
 
 	for s in automaton.get_states():
 		if s in automaton.get_finals_list():
-			graph.add_node(pydot.Node(s.get_name(), shape='doublecircle'))
+			my_node = pydot.Node(s.get_name(), shape='doublecircle')
+			graph.add_node(my_node)
 		else:
-			graph.add_node(pydot.Node(s.get_name(), shape='circle'))
+			my_node = pydot.Node(s.get_name(), shape='circle')
+			graph.add_node(my_node)
 	
 	for t in automaton.get_transitions():
 		my_edge = pydot.Edge(t.get_origin().get_name(), t.get_goal().get_name(), label = t.get_name())
 		graph.add_edge(my_edge)
-	
+
 	graph.set_graph_defaults(rankdir='LR')
 	graph.write_raw('assets/dot/output.dot')
 	graph.write_png('assets/steps/output.png')
+
+	
+	steps = 1
+	for s in automaton.get_steps():
+
+		my_node = pydot.Node(s.get_origin().get_name(), shape='circle', color='blue')
+		graph.add_node(my_node)
+		graph.write_png(f'assets/steps/output{steps}.png')
+		steps += 1
+
+		my_edge = pydot.Edge(s.get_origin().get_name(), s.get_goal().get_name(), label = s.get_name(), color='blue')
+		graph.del_edge(s.get_origin().get_name(), s.get_goal().get_name())
+		graph.add_edge(my_edge)
+
+		graph.write_raw(f'assets/dot/output{steps}.dot')
+		graph.write_png(f'assets/steps/output{steps}.png')
+		steps += 1
+
+		my_node.set_color('black')
+		graph.write_raw(f'assets/dot/output{steps}.dot')
+		graph.write_png(f'assets/steps/output{steps}.png')
+		steps += 1
+		
+		my_edge.set_color('black')
+		graph.write_raw(f'assets/dot/output{steps}.dot')
+		graph.write_png(f'assets/steps/output{steps}.png')
+		steps += 1
+
 
 
 def reach_for(state, states):
@@ -213,7 +243,6 @@ def main():
 	steps = a.get_finals()
 	
 	a.get_states()
-	#print(steps.get_name())
 
 	salve_dot(a)
 
