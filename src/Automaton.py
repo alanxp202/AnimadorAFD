@@ -66,7 +66,7 @@ class Automaton:
                 if f.get_goal().get_name() == end:
                     return f.get_goal()
 
-    
+
     def get_finals_list(self):
 
         finals_list =[]
@@ -97,8 +97,8 @@ class Automaton:
 
 
     def get_reach(self, state ,word):
-
+        
         for t in self.transitions:
             if t.get_origin()== state and t.get_name() == word[0]:
-                self.steps.append (f'{t.get_origin().get_name()} {word[0]} > {t.get_goal().get_name()}')
+                self.steps.append (t)
                 return t.get_goal()
