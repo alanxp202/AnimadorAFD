@@ -16,8 +16,20 @@ class Automaton:
         return self.name
 
 
+    def get_word(self):
+        return self.word
+
+
+    def set_word(self, word:list)->list:
+        self.word = word
+
+
     def get_steps(self):
         return self.steps
+
+
+    def append_steps(self, steps:list):
+        self.steps.append(steps)
 
 
     def get_transitions(self):
@@ -49,11 +61,12 @@ class Automaton:
 
     def get_initials_list(self):
 
-        finals_list =[]
+        initias_list =[]
         for i in self.initials:
-            finals_list.append(i.get_origin())
+            if i.get_origin() not in initias_list:
+                initias_list.append(i.get_origin())
 
-        return finals_list
+        return initias_list
 
 
     def get_finals(self, end = ''):
@@ -100,5 +113,18 @@ class Automaton:
         
         for t in self.transitions:
             if t.get_origin()== state and t.get_name() == word[0]:
-                self.steps.append (t)
-                return t.get_goal()
+                #self.steps.append(t)
+                return t
+
+    
+    def start_reach(self, word, initial):
+        
+        steps_t = []
+        walk = ''
+        walk = self.get_reach(initial, word[0])
+        word.pop(0)
+        steps_t.append(walk)
+        for w in word:
+            walk = self.get_reach(walk.get_goal(), w)
+            steps_t.append(walk)
+        self.append_steps(steps_t)
