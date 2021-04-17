@@ -113,18 +113,16 @@ class Automaton:
         
         for t in self.transitions:
             if t.get_origin()== state and t.get_name() == word[0]:
-                #self.steps.append(t)
                 return t
 
-    
+
     def start_reach(self, word, initial):
         
         steps_t = []
-        walk = ''
-        walk = self.get_reach(initial, word[0])
-        word.pop(0)
-        steps_t.append(walk)
         for w in word:
-            walk = self.get_reach(walk.get_goal(), w)
-            steps_t.append(walk)
+
+            initial = self.get_reach(initial, w)
+            steps_t.append(initial)
+            initial = initial.get_goal()
+
         self.append_steps(steps_t)
