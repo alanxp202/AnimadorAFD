@@ -88,7 +88,7 @@ def get_word(input_file:list)-> list:
 	return result
 
 
-def salve_dot(automaton:Automaton):
+def salve_dot(automaton:Automaton, state_walk):
 	
 	ini = 0
 	steps = 1
@@ -118,7 +118,7 @@ def salve_dot(automaton:Automaton):
 	graph.write_png(f'assets/steps/output_{steps}.png')
 
 	
-	for s in automaton.get_steps():
+	for s in state_walk:
 		if s.get_origin() in automaton.get_finals_list():
 			my_node = pydot.Node(s.get_origin().get_name(), shape='doublecircle', color='blue')
 			graph.add_node(my_node)
@@ -164,7 +164,7 @@ def salve_dot(automaton:Automaton):
 			steps += 1
 
 
-def cria_gif():
+def cria_gif(gif:int):
 	
 	png_dir = 'assets/steps/'
 	images = []
@@ -178,42 +178,13 @@ def cria_gif():
 			file_path = os.path.join(png_dir, file_name)
 			images.append(imageio.imread(file_path))
 	
-	imageio.mimsave('assets/gif/movie.gif', images, duration=0.5)
-
-
-def reach_for(state, states):
-
-	reach = []
-	#if not not wrd:
-	for info in states:
-		estados = info.split(' ')
-		origin = estados[0]
-		word = estados[1]
-		goal = estados[3]
+	imageio.mimsave(f'assets/gif/gif_automato_{gif}.gif', images, duration=0.4,loop=1)
+	
+	for file in os.listdir('assets/steps/'):
 		try:
-			#print(estados)
-			if state == origin:
-				reach.append(goal)
-				
-		except IndexError as e:
+			os.remove(f'assets/steps/{file}')
+		except FileNotFoundError:
 			pass
-	return reach
-	# else:
-	# 	return
-
-	# #print(reach)
-
-	# for info in reach:
-	# 	#print(info)
-	# 	try:
-	# 		print(f'{wrd[0]}[{info}]')
-	# 		wrd.pop(0)
-	# 		reach_for(info, states, wrd)
-			
-	# 	except IndexError as e:
-	# 		return
-
-	# #print(wrd)
 
 
 def load_states(states_dict: dict) ->list:
@@ -247,8 +218,6 @@ def load_transitions(states:list, transitions_raw:list):
 			if info.get_goal() == state.get_name():
 				info.set_goal(state)
 
-		#print(f'{info.get_origin().get_name()} -{info.get_name()}-> {info.get_goal().get_name()}')
-
 	return transitions 
 
 
@@ -267,19 +236,20 @@ def main():
 
 	a = Automaton('Automato Finito',word, transitions)
 	
-	inicial = a.get_initials()
-	walk = a.get_reach(inicial, word[0])
-	word.pop(0)
-	
-	for w in word:
-		walk = a.get_reach(walk, w)
-		
+	inicial = a.get_initials_list()
 
-	steps = a.get_finals()
-	
-	a.get_states()
+	for i in inicial:
+		a.start_reach(word,i)
+		word = get_word(input_file)
 
-	salve_dot(a)
-	cria_gif()
+	print(a.get_steps())
+	
+	gif = 1
+	for s in a.get_steps():
+		salve_dot(a,s)
+		cria_gif(gif)
+		gif += 1
+
+
 if __name__ == "__main__":
     main()
