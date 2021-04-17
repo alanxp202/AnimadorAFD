@@ -88,7 +88,7 @@ def get_word(input_file:list)-> list:
 	return result
 
 
-def salve_dot(automaton:Automaton, state_walk):
+def save_dot_and_png(automaton:Automaton, state_walk):
 	
 	ini = 0
 	steps = 1
@@ -164,7 +164,7 @@ def salve_dot(automaton:Automaton, state_walk):
 			steps += 1
 
 
-def cria_gif(gif:int):
+def save_gif(gif:int):
 	
 	png_dir = 'assets/steps/'
 	images = []
@@ -246,8 +246,8 @@ def main():
 	
 	gif = 1
 	for s in a.get_steps():
-		salve_dot(a,s)
-		cria_gif(gif)
+		save_dot_and_png(a,s)
+		save_gif(gif)
 		gif += 1
 
 
