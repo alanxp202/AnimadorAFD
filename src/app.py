@@ -96,8 +96,14 @@ def save(graph, steps):
 
 def save_dot_and_png(automaton:Automaton, state_walk):
 	
+	for file in os.listdir('assets/dot/'):
+		try:
+			os.remove(f'assets/dot/{file}')
+		except FileNotFoundError:
+			pass
+
 	ini = 0
-	steps = 1
+	steps = 0
 	graph = pydot.Dot(label=automaton.get_name(), graph_type='digraph', bgcolor='gray')
 	
 	for i in automaton.get_states():
