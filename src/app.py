@@ -3,9 +3,7 @@ from automaton import Automaton
 from state import State
 import imageio
 import pydot
-import glob
 import json
-import sys
 import os
 
 
@@ -184,7 +182,8 @@ def save_gif(gif:int):
 			images.append(imageio.imread(file_path))
 	
 	imageio.mimsave(f'assets/gif/gif_automato_{gif}.gif', images, duration=0.4,loop=1)
-	
+	print(f'Animação criada em: assets/gif/gif_automato_{gif}.gif salvo!')
+
 	for file in os.listdir('assets/steps/'):
 		try:
 			os.remove(f'assets/steps/{file}')
@@ -246,7 +245,7 @@ def main():
 		a.start_reach(word,i)
 		word = get_word(input_file)
 
-	print(a.get_steps())
+	#print(a.get_steps())
 	
 	gif = 1
 	for s in a.get_steps():
