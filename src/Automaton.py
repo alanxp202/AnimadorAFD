@@ -123,6 +123,9 @@ class Automaton:
 
             initial = self.get_reach(initial, w)
             steps_t.append(initial)
-            initial = initial.get_goal()
+            try:
+                initial = initial.get_goal()
+            except AttributeError:
+                break
 
         self.append_steps(steps_t)
