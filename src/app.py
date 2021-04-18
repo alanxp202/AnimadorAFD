@@ -93,7 +93,7 @@ def save_dot_and_png(automaton:Automaton, state_walk):
 	ini = 0
 	steps = 1
 	graph = pydot.Dot(label=automaton.get_name(), graph_type='digraph', bgcolor='gray')
-
+	
 	for i in automaton.get_states():
 		if i in automaton.get_initials_list():
 			graph.add_node(pydot.Node(ini, shape = 'point'))
@@ -119,49 +119,58 @@ def save_dot_and_png(automaton:Automaton, state_walk):
 
 	
 	for s in state_walk:
-		if s.get_origin() in automaton.get_finals_list():
-			my_node = pydot.Node(s.get_origin().get_name(), shape='doublecircle', color='blue')
-			graph.add_node(my_node)
-			graph.write_raw(f'assets/dot/output_{steps}.dot')
-			graph.write_png(f'assets/steps/output_{steps}.png')
-			steps += 1
-		else:
-			my_node = pydot.Node(s.get_origin().get_name(), shape='circle', color='blue')
-			graph.add_node(my_node)
+		try:
+			if s.get_origin() in automaton.get_finals_list():
+				my_node = pydot.Node(s.get_origin().get_name(), shape='doublecircle', color='blue')
+				graph.add_node(my_node)
+				graph.write_raw(f'assets/dot/output_{steps}.dot')
+				graph.write_png(f'assets/steps/output_{steps}.png')
+				steps += 1
+			else:
+				my_node = pydot.Node(s.get_origin().get_name(), shape='circle', color='blue')
+				graph.add_node(my_node)
+				graph.write_raw(f'assets/dot/output_{steps}.dot')
+				graph.write_png(f'assets/steps/output_{steps}.png')
+				steps += 1
+
+			my_edge = pydot.Edge(s.get_origin().get_name(), s.get_goal().get_name(), label = s.get_name(), color='blue')
+			graph.del_edge(s.get_origin().get_name(), s.get_goal().get_name())
+			graph.add_edge(my_edge)
+
 			graph.write_raw(f'assets/dot/output_{steps}.dot')
 			graph.write_png(f'assets/steps/output_{steps}.png')
 			steps += 1
 
-		my_edge = pydot.Edge(s.get_origin().get_name(), s.get_goal().get_name(), label = s.get_name(), color='blue')
-		graph.del_edge(s.get_origin().get_name(), s.get_goal().get_name())
-		graph.add_edge(my_edge)
-
-		graph.write_raw(f'assets/dot/output_{steps}.dot')
-		graph.write_png(f'assets/steps/output_{steps}.png')
-		steps += 1
-
-		my_node.set_color('black')
-		graph.write_raw(f'assets/dot/output_{steps}.dot')
-		graph.write_png(f'assets/steps/output_{steps}.png')
-		steps += 1
-		
-		my_edge.set_color('black')
-		graph.write_raw(f'assets/dot/output_{steps}.dot')
-		graph.write_png(f'assets/steps/output_{steps}.png')
-		steps += 1
-
-		if s.get_goal() in automaton.get_finals_list():
-			my_node = pydot.Node(s.get_goal().get_name(), shape='doublecircle', color='blue')
-			graph.add_node(my_node)
+			my_node.set_color('black')
 			graph.write_raw(f'assets/dot/output_{steps}.dot')
 			graph.write_png(f'assets/steps/output_{steps}.png')
 			steps += 1
-		else:
-			my_node = pydot.Node(s.get_goal().get_name(), shape='circle', color='blue')
-			graph.add_node(my_node)
+			
+			my_edge.set_color('black')
 			graph.write_raw(f'assets/dot/output_{steps}.dot')
 			graph.write_png(f'assets/steps/output_{steps}.png')
 			steps += 1
+
+			if s.get_goal() in automaton.get_finals_list():
+				my_node = pydot.Node(s.get_goal().get_name(), shape='doublecircle', color='blue')
+				graph.add_node(my_node)
+				graph.write_raw(f'assets/dot/output_{steps}.dot')
+				graph.write_png(f'assets/steps/output_{steps}.png')
+				steps += 1
+			else:
+				my_node = pydot.Node(s.get_goal().get_name(), shape='circle', color='blue')
+				graph.add_node(my_node)
+				graph.write_raw(f'assets/dot/output_{steps}.dot')
+				graph.write_png(f'assets/steps/output_{steps}.png')
+				steps += 1
+
+		except AttributeError:
+			graph.set_graph_defaults(label='Palavra inválida!')
+			my_edge.set_color('black')
+			graph.write_raw(f'assets/dot/output_{steps}.dot')
+			graph.write_png(f'assets/steps/output_{steps}.png')
+			steps += 1
+			pass
 
 
 def save_gif(gif:int):
